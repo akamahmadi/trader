@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>⚡ Ultimate AI Trader</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{background:#060910;color:#e8edf5;font-family:Tahoma,Arial,sans-serif;direction:rtl;min-height:100vh;}
+  input,textarea,select{font-family:inherit;}
+  ::-webkit-scrollbar{width:4px;}
+  ::-webkit-scrollbar-track{background:#0b1118;}
+  ::-webkit-scrollbar-thumb{background:#1a2740;border-radius:2px;}
+  .btn{border:none;cursor:pointer;font-family:inherit;transition:all .2s;}
+  .btn:active{transform:scale(0.97);}
+  .card{background:#0f1926;border:1px solid #182334;border-radius:10px;margin-bottom:10px;overflow:hidden;}
+  .card-title{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:11px 14px;border-bottom:1px solid #182334;}
+  .card-body{padding:14px;}
+  .row-item{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid #182334;gap:10px;}
+  .row-label{font-size:11px;color:#6b8099;white-space:nowrap;padding-top:2px;}
+  .row-value{font-size:13px;text-align:right;font-weight:500;}
+  .tab-bar{display:flex;background:#0b1118;border-radius:10px;border:1px solid #182334;margin-bottom:14px;overflow:hidden;}
+  .tab-btn{flex:1;padding:11px 0;border:none;cursor:pointer;font-size:12px;background:transparent;color:#6b8099;border-bottom:2px solid transparent;font-family:inherit;transition:all .2s;}
+  .tab-btn.active{background:rgba(0,212,255,.1);color:#00d4ff;border-bottom-color:#00d4ff;font-weight:800;}
+  .verdict{border-radius:12px;padding:16px;text-align:center;margin-bottom:14px;}
+  .bar-track{background:#2e4058;border-radius:4px;height:7px;margin-top:4px;position:relative;}
+  .bar-fill{height:100%;border-radius:4px;transition:width .5s;}
+  .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:9px;font-weight:800;}
+  .toggle-wrap{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-radius:10px;cursor:pointer;border:2px solid #182334;transition:all .3s;margin-bottom:12px;}
+  .toggle-track{width:44px;height:24px;border-radius:12px;position:relative;background:#2e4058;transition:background .3s;flex-shrink:0;}
+  .toggle-thumb{position:absolute;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .3s;}
+  .upload-zone{border:2px dashed #182334;border-radius:12px;padding:28px 16px;text-align:center;transition:all .2s;margin-bottom:12px;position:relative;}
+  .upload-zone.dragover{border-color:#00d4ff;background:rgba(0,212,255,.05);}
+  .preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px;}
+  .preview-item{position:relative;border-radius:8px;overflow:hidden;border:1px solid #182334;}
+  .preview-img{width:100%;height:80px;object-fit:cover;display:block;}
+  .preview-del{position:absolute;top:3px;left:3px;background:rgba(255,61,87,.8);border:none;border-radius:50%;width:20px;height:20px;color:#fff;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(0,212,255,.3);border-top-color:#00d4ff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-left:6px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .collapse-btn{background:none;border:none;color:#6b8099;font-size:12px;cursor:pointer;padding:0;}
+  .prob-bar{display:flex;height:18px;border-radius:6px;overflow:hidden;margin-bottom:8px;}
+  .scenario-block{margin-bottom:10px;padding:8px 10px;border-radius:7px;font-size:12px;line-height:1.8;border-right:3px solid;}
+  .level-tag{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+  .info-box{padding:8px 12px;border-radius:8px;font-size:11px;line-height:1.8;margin-top:8px;}
+  .checkbox-wrap{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;border:1px solid #182334;cursor:pointer;transition:all .2s;margin-top:12px;}
+  .checkbox-box{width:20px;height:20px;border-radius:5px;border:2px solid #2e4058;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+  input[type=range]{width:100%;accent-color:#00d4ff;margin:6px 0;}
+  textarea{width:100%;padding:9px 12px;background:#0b1118;border:1px solid #182334;border-radius:8px;color:#e8edf5;font-size:12px;resize:none;outline:none;line-height:1.7;}
+  .num-input{width:100%;padding:10px 11px;background:#060910;border:1px solid #182334;border-radius:8px;color:#e8edf5;font-size:15px;outline:none;font-family:monospace;}
+  .header{background:#0b1118;border-bottom:1px solid #182334;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+  .content{padding:14px 14px 0;}
+  .tf-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+  .tf-chip{background:#0f1926;border:1px solid #182334;border-radius:6px;padding:4px 10px;font-size:10px;}
+  .strat-row{padding:7px 0;border-bottom:1px solid #182334;display:flex;justify-content:space-between;align-items:center;}
+  .hidden{display:none;}
+  .collapsible-content{transition:all .3s;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <span style="font-size:15px;font-weight:900;color:#00d4ff;">⚡ Ultimate AI Trader</span>
+    <span style="font-size:9px;color:#6b8099;background:#0f1926;padding:2px 7px;border-radius:4px;margin-right:6px;">PRO</span>
+  </div>
+  <div id="riskBadge" style="font-size:11px;font-family:monospace;background:#0f1926;border:1px solid #182334;border-radius:6px;padding:4px 10px;color:#00e676;">
+    🔒 $1.00 (1%)
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- TABS -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('upload')">📤 چارت</button>
+    <button class="tab-btn" onclick="showTab('settings')">⚙️ تنظیم</button>
+    <button class="tab-btn" onclick="showTab('result')">📊 نتیجه</button>
+  </div>
+
+  <!-- ══════════ UPLOAD TAB ══════════ -->
+  <div id="tab-upload">
+
+    <!-- API Key -->
+    <div id="apiKeySection" style="background:#0f1926;border:1px solid #f5a623;border-radius:10px;padding:14px;margin-bottom:14px;">
+      <div style="font-size:11px;color:#f5a623;font-weight:800;margin-bottom:8px;letter-spacing:.05em;">🔑 API KEY ANTHROPIC</div>
+      <div style="font-size:10px;color:#6b8099;margin-bottom:8px;line-height:1.7;">
+        برای استفاده نیاز به API key داری.<br>
+        از <a href="https://console.anthropic.com" target="_blank" style="color:#00d4ff;">console.anthropic.com</a> رایگان بگیر.
+      </div>
+      <input 
+        type="password" 
+        id="apiKeyInput" 
+        placeholder="sk-ant-api03-..." 
+        oninput="saveApiKey()"
+        style="width:100%;padding:10px 12px;background:#060910;border:1px solid #182334;border-radius:8px;color:#e8edf5;font-size:13px;outline:none;font-family:monospace;box-sizing:border-box;"
+      >
+      <div id="apiKeyStatus" style="font-size:10px;color:#2e4058;margin-top:6px;">کلید وارد نشده</div>
+    </div>
+
+    <div class="tf-chips">
+      <div class="tf-chip"><span style="color:#00d4ff;font-weight:800;">M5</span> <span style="color:#6b8099;">ورود دقیق</span></div>
+      <div class="tf-chip"><span style="color:#00d4ff;font-weight:800;">M15</span> <span style="color:#6b8099;">تأیید</span></div>
+      <div class="tf-chip"><span style="color:#00d4ff;font-weight:800;">H1</span> <span style="color:#6b8099;">روند</span></div>
+      <div class="tf-chip"><span style="color:#00d4ff;font-weight:800;">D1</span> <span style="color:#6b8099;">جهت کلی</span></div>
+      <div class="tf-chip"><span style="color:#00d4ff;font-weight:800;">W1</span> <span style="color:#6b8099;">تصویر بزرگ</span></div>
+    </div>
+
+    <!-- Upload zone -->
+    <div class="upload-zone" id="dropZone">
+      <div style="font-size:32px;margin-bottom:8px;">📊</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:8px;">چارت آپلود کن</div>
+      <label for="fileInput" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#00d4ff,#0099cc);border-radius:8px;font-size:14px;font-weight:800;color:#000;cursor:pointer;margin-bottom:10px;">
+        📁 انتخاب از گالری
+      </label>
+      <input id="fileInput" type="file" accept="image/*" multiple style="position:fixed;top:-9999px;left:-9999px;opacity:0;width:1px;height:1px;" onchange="handleFiles(this.files)">
+      <div style="font-size:10px;color:#6b8099;line-height:1.8;">
+        یا عکس رو drag کن اینجا<br>
+        حداکثر ۵ چارت — M5 تا W1
+      </div>
+    </div>
+
+    <!-- Previews -->
+    <div class="preview-grid" id="previewGrid" style="display:none;"></div>
+
+    <!-- Context -->
+    <textarea id="contextInput" rows="2" placeholder="اطلاعات اضافی (اختیاری): CPI امروز، NFP فردا، اخبار خاص..." style="margin-bottom:12px;"></textarea>
+
+    <!-- Analyze btn -->
+    <button id="analyzeBtn" class="btn" onclick="analyze()" style="width:100%;padding:15px 0;border-radius:10px;background:linear-gradient(135deg,#00d4ff,#0099cc);color:#000;font-size:15px;font-weight:900;letter-spacing:.3px;margin-bottom:16px;">
+      ⚡ تحلیل با هوش مصنوعی
+    </button>
+
+    <div id="uploadError" style="display:none;background:rgba(255,61,87,.1);border:1px solid #ff3d57;border-radius:8px;padding:11px;color:#ff3d57;font-size:12px;margin-bottom:12px;"></div>
+
+    <!-- Strategies -->
+    <div class="card">
+      <div class="card-title" style="color:#00d4ff;">استراتژی‌های فعال</div>
+      <div class="card-body" style="padding:8px 14px;">
+        <div class="strat-row"><span style="font-size:12px;font-weight:600;">ICT / Smart Money</span><span style="font-size:10px;color:#6b8099;">OB، FVG، BOS، Liquidity</span></div>
+        <div class="strat-row"><span style="font-size:12px;font-weight:600;">Wyckoff Method</span><span style="font-size:10px;color:#6b8099;">فازهای انباشت/توزیع</span></div>
+        <div class="strat-row"><span style="font-size:12px;font-weight:600;">Supply & Demand</span><span style="font-size:10px;color:#6b8099;">مناطق عرضه و تقاضا</span></div>
+        <div class="strat-row"><span style="font-size:12px;font-weight:600;">Elliott + Fibonacci</span><span style="font-size:10px;color:#6b8099;">امواج و سطوح بازگشت</span></div>
+        <div class="strat-row"><span style="font-size:12px;font-weight:600;">VSA</span><span style="font-size:10px;color:#6b8099;">تحلیل حجم و قیمت</span></div>
+        <div class="strat-row" style="border:none;"><span style="font-size:12px;font-weight:600;">Multi-TF Analysis</span><span style="font-size:10px;color:#6b8099;">Top-down W1 تا M5</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ SETTINGS TAB ══════════ -->
+  <div id="tab-settings" class="hidden">
+
+    <!-- Capital -->
+    <div class="card">
+      <div class="card-title" style="color:#f5a623;">💰 سرمایه حساب</div>
+      <div class="card-body">
+        <div style="font-size:10px;color:#6b8099;margin-bottom:6px;text-transform:uppercase;">مقدار سرمایه ($)</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="color:#6b8099;font-size:14px;">$</span>
+          <input type="number" id="capitalInput" class="num-input" value="100" min="1" step="10" oninput="updateRisk()">
+        </div>
+        <div style="font-size:10px;color:#2e4058;">موجودی واقعی حسابت رو وارد کن</div>
+      </div>
+    </div>
+
+    <!-- Risk -->
+    <div class="card" id="riskCard">
+      <div class="card-title" id="riskCardTitle" style="color:#00e676;">🎯 ریسک هر معامله</div>
+      <div class="card-body">
+        <div style="font-size:10px;color:#6b8099;margin-bottom:6px;text-transform:uppercase;">درصد ریسک (%)</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <input type="number" id="riskInput" class="num-input" value="1" min="0.1" max="1" step="0.1" oninput="updateRisk()">
+          <span style="color:#6b8099;font-size:14px;">٪</span>
+        </div>
+        <input type="range" id="riskSlider" min="0.1" max="1" step="0.1" value="1" oninput="syncSlider()">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:#2e4058;margin-bottom:12px;">
+          <span>۰.۱٪</span><span style="color:#00e676;">۰.۵٪</span><span style="color:#ffd740;">۱٪</span>
+        </div>
+        <!-- Risk amount display -->
+        <div style="background:#060910;border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;" id="riskDisplay">
+          <div>
+            <div style="font-size:10px;color:#6b8099;">ریسک هر معامله</div>
+            <div style="font-size:11px;color:#2e4058;margin-top:2px;">از سرمایه‌ات</div>
+          </div>
+          <div style="text-align:left;">
+            <div id="riskAmountDisplay" style="font-size:24px;font-weight:900;font-family:monospace;color:#00e676;">$1.00</div>
+            <div id="riskPctDisplay" style="font-size:11px;color:#6b8099;text-align:left;">1٪</div>
+          </div>
+        </div>
+        <div id="riskStatusMsg" class="info-box" style="background:rgba(255,215,64,.1);border:1px solid rgba(255,215,64,.3);color:#ffd740;margin-top:8px;">
+          ⚡ ریسک استاندارد — در محدوده قانون طلایی
+        </div>
+      </div>
+    </div>
+
+    <!-- High Risk Permission -->
+    <div class="card">
+      <div class="card-title" id="highRiskTitle" style="color:#182334;">🔓 اجازه افزایش ریسک</div>
+      <div class="card-body">
+        <div style="font-size:12px;color:#6b8099;line-height:1.8;margin-bottom:12px;">
+          به صورت پیش‌فرض ریسک به <span style="color:#00e676;font-weight:700;">۱٪</span> محدود شده.<br>
+          برای ریسک بیشتر باید موافقت بدی:
+        </div>
+
+        <!-- Toggle -->
+        <div class="toggle-wrap" id="riskToggle" onclick="toggleHighRisk()">
+          <div>
+            <div id="toggleLabel" style="font-size:13px;font-weight:700;color:#e8edf5;">🔒 ریسک محدود به ۱٪</div>
+            <div id="toggleSub" style="font-size:10px;color:#6b8099;margin-top:3px;">برای فعال کردن کلیک کن</div>
+          </div>
+          <div class="toggle-track" id="toggleTrack">
+            <div class="toggle-thumb" id="toggleThumb" style="left:3px;"></div>
+          </div>
+        </div>
+
+        <!-- Warning box — hidden until toggle on -->
+        <div id="highRiskWarning" class="hidden" style="background:rgba(255,61,87,.07);border:1px solid rgba(255,61,87,.3);border-radius:10px;padding:14px;">
+          <div style="font-size:12px;color:#ff3d57;font-weight:700;margin-bottom:10px;">⚠️ هشدار مهم — قبل از تأیید بخوان:</div>
+          <div style="font-size:11px;color:#6b8099;line-height:2;">
+            • ریسک بالاتر از ۱٪ احتمال ضرر را به شدت افزایش می‌دهد<br>
+            • هیچ سیستمی تضمین سود ندارد<br>
+            • این تصمیم مسئولیتش کاملاً با خودت است<br>
+            • پیشنهاد می‌شود حداکثر تا ۲٪ بروی
+          </div>
+          <!-- Checkbox -->
+          <div class="checkbox-wrap" id="confirmCheckbox" onclick="toggleConfirm()">
+            <div class="checkbox-box" id="checkboxBox">
+              <span id="checkmark" style="display:none;color:#fff;font-size:13px;font-weight:900;">✓</span>
+            </div>
+            <span id="confirmLabel" style="font-size:12px;color:#6b8099;">من ریسک‌ها را می‌پذیرم و مسئولیت با خودم است</span>
+          </div>
+          <div id="unlockMsg" class="hidden info-box" style="background:rgba(255,61,87,.15);color:#ff3d57;font-weight:700;text-align:center;margin-top:10px;">
+            🔓 اجازه داده شد — تا ۵٪ ریسک می‌توانی تنظیم کنی
+          </div>
+          <div id="lockMsg" class="info-box" style="background:#141f2e;color:#2e4058;text-align:center;margin-top:10px;">
+            ⛔ تیک بالا را بزن تا ریسک بیشتر از ۱٪ فعال شود
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confluence -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:1px solid #182334;cursor:pointer;" onclick="toggleConfluence()">
+        <div class="card-title" style="color:#b46ef5;border:none;padding:0;margin:0;">🎯 سیستم Confluence</div>
+        <button class="collapse-btn" id="confluenceArrow">▼</button>
+      </div>
+      <div id="confluenceBody" class="card-body hidden">
+        <div id="confluenceList"></div>
+        <div class="info-box" style="background:rgba(255,215,64,.1);color:#ffd740;border:1px solid rgba(255,215,64,.3);margin-top:8px;">
+          حداقل ۶ امتیاز برای GO — حداکثر ۱۷
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════ RESULT TAB ══════════ -->
+  <div id="tab-result" class="hidden">
+    <div id="loadingState" class="hidden" style="background:#0f1926;border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:28px;text-align:center;margin-bottom:14px;">
+      <div style="font-size:36px;margin-bottom:10px;">🧠</div>
+      <div style="font-size:14px;color:#00d4ff;font-weight:800;margin-bottom:10px;">تحلیل عمیق در حال انجام...</div>
+      <div style="font-size:11px;color:#6b8099;line-height:2.2;">
+        · ICT & Smart Money<br>· Wyckoff Phase<br>· Supply & Demand<br>
+        · Elliott & Fibonacci<br>· Sentiment & Intermarket<br>· Confluence Score
+      </div>
+    </div>
+    <div id="emptyState" style="text-align:center;padding:50px 20px;color:#2e4058;">
+      <div style="font-size:40px;margin-bottom:12px;">📈</div>
+      <div style="font-size:13px;">چارت آپلود کن و تحلیل بگیر</div>
+      <div style="font-size:11px;margin-top:6px;">برو تب چارت</div>
+    </div>
+    <div id="resultContent" class="hidden"></div>
+  </div>
+
+</div><!-- /content -->
+
+<script>
+// ── State ──────────────────────────────
+let images = [];
+let highRiskOn = false;
+let confirmed = false;
+
+// ── System prompt ──────────────────────
+function buildPrompt(capital, riskPct) {
+  const riskAmt = (capital * riskPct / 100).toFixed(2);
+  return `\`تو یک تریدر حرفه‌ای با بیش از ۲۵ سال تجربه در hedge fund های برتر جهان هستی.
+ترکیبی از دانش و تجربه برترین استراتژیست‌های بازار:
+- Smart Money Concepts (ICT - Inner Circle Trader): Order Blocks، FVG، Liquidity Sweeps، BOS/ChoCH
+- Wyckoff Method: Accumulation/Distribution، Spring، Upthrust، Composite Man
+- Elliott Wave + Fibonacci: امواج، اصلاح‌ها، گسترش‌ها
+- Supply & Demand Zones (Sam Seiden): مناطق واقعی عرضه و تقاضا
+- Volume Spread Analysis (VSA): رابطه حجم و قیمت، effort vs result
+- Market Profile + POC: نقاط کنترل، ارزش منصفانه
+- Price Action (Al Brooks, Lance Beggs): کندل‌خوانی عمیق، context
+- Multi-Timeframe Analysis: Top-down از W1 تا M5
+- Liquidity Theory: شکار استاپ‌ها، جمع‌آوری نقدینگی
+- Intermarket Analysis: همبستگی DXY، Gold، Bonds، Equities
+- Sentiment Analysis: Fear & Greed، COT Report، Retail vs Smart Money
+
+اندیکاتورهای مهم که باید بررسی کنی (از روی چارت):
+EMA 20/50/200 | RSI (14) | MACD | ATR | Bollinger Bands | Volume | Stochastic | OBV | VWAP
+
+═══════════════════════════════════
+اطلاعات حساب:
+- سرمایه: \${capital}$ | ریسک مجاز: \${riskPct}% = \${riskAmt}$
+- هدف: سود کوچک مستمر، حفظ سرمایه اولویت اول
+- تایم‌فریم ورود: M5-H1، تأیید: D1-W1
+═══════════════════════════════════
+
+قوانین طلایی (نقض‌ناپذیر):
+1. R:R < 1.5 → رد فوری
+2. Win Prob < 55% → رد فوری  
+3. CPI/NFP/FOMC نزدیک → صبر اجباری
+4. روندهای TF بالاتر مخالف → احتیاط شدید
+5. Confluence < 3 عامل → رد
+6. حداکثر ریسک \${riskAmt}$ ثابت
+
+═══════════════════════════════════
+CONFLUENCE SCORING SYSTEM:
+هر عامل تأییدکننده = +1 امتیاز
+- روند D1/W1 هماهنگ با ورود: +2
+- Order Block / Supply&Demand Zone: +2
+- FVG (Fair Value Gap) پر نشده: +1
+- BOS یا ChoCH تأیید شده: +2
+- Fibonacci 61.8% یا 78.6%: +1
+- حمایت/مقاومت کلیدی: +1
+- کندل تأیید (Pin Bar/Engulfing/Doji): +1
+- حجم تأییدکننده: +1
+- RSI divergence: +1
+- MACD crossover: +1
+- EMA alignment: +1
+- Liquidity sweep قبل از حرکت: +2
+- Wyckoff pattern: +2
+حداقل برای GO: 6 امتیاز از 17
+
+═══════════════════════════════════
+محاسبات دقیق:
+- pip_value فارکس اصلی: 10$/lot
+- pip_value طلا (XAUUSD): 1$/lot به ازای 0.1$
+- pip_value جفت‌ارز JPY: 9.09$/lot  
+- lot_size = \${riskAmt} / (sl_distance_pips × pip_value)
+- profit_tp1 = tp1_pips × pip_value × lot_size
+- profit_tp2 = tp2_pips × pip_value × lot_size
+
+═══════════════════════════════════
+فقط JSON خالص — بدون هیچ توضیح یا markdown:
+
+{
+  "symbol": "نماد",
+  "asset_class": "forex|gold|crypto|index",
+  "timeframes_detected": ["M5","M15","H1","D1","W1"],
+  "analysis_time": "زمان تحلیل",
+
+  "market_structure": {
+    "w1_bias": "bullish|bearish|sideways",
+    "d1_bias": "bullish|bearish|sideways", 
+    "h1_bias": "bullish|bearish|sideways",
+    "m15_bias": "bullish|bearish|sideways",
+    "htf_alignment": true,
+    "current_phase": "accumulation|distribution|markup|markdown|ranging",
+    "bos_choch": "توضیح Break of Structure یا Change of Character اخیر",
+    "market_summary": "تحلیل ساختار ۳ جمله"
+  },
+
+  "smart_money": {
+    "order_blocks": ["محدوده OB صعودی/نزولی"],
+    "fvg": ["محدوده FVG پر نشده"],
+    "liquidity_levels": ["سطوح نقدینگی — جایی که استاپ‌ها جمع شده"],
+    "liquidity_swept": "آیا اخیراً نقدینگی شکار شده؟",
+    "institutional_bias": "long|short|neutral — جهت پول هوشمند"
+  },
+
+  "wyckoff": {
+    "phase": "A|B|C|D|E|unknown",
+    "event": "Spring|Upthrust|SOS|SOW|LPS|LPSY|unknown",
+    "explanation": "توضیح کوتاه"
+  },
+
+  "technical": {
+    "key_levels": {
+      "major_resistance": ["سطوح مقاومت مهم"],
+      "major_support": ["سطوح حمایت مهم"],
+      "pivot_points": ["پیووت‌های مهم"]
+    },
+    "fibonacci": {
+      "relevant_levels": ["سطوح فیبوناچی مهم"],
+      "current_retracement": "درصد اصلاح فعلی"
+    },
+    "patterns": ["الگوهای قیمتی شناسایی‌شده"],
+    "candle_analysis": "تحلیل کندل‌های اخیر — پرایس اکشن",
+    "indicators": {
+      "ema_status": "وضعیت EMAها",
+      "rsi": "مقدار تقریبی و وضعیت",
+      "macd": "وضعیت MACD",
+      "volume": "تحلیل حجم",
+      "atr": "نوسان فعلی"
+    },
+    "vsa_analysis": "تحلیل VSA — رابطه حجم و قیمت"
+  },
+
+  "sentiment": {
+    "retail_bias": "بیشتر ریتیل‌ها long هستند یا short",
+    "smart_money_bias": "پول هوشمند کجاست",
+    "fear_greed": "ترس|طمع|خنثی",
+    "contrarian_signal": "آیا سیگنال خلاف جمعیت وجود دارد؟",
+    "news_sentiment": "سنتیمنت خبری"
+  },
+
+  "fundamental": {
+    "upcoming_events": ["رویدادهای خبری مهم نزدیک"],
+    "current_impact": "تأثیر فاندامنتال فعلی",
+    "intermarket": "رابطه با DXY، Gold، Bonds"
+  },
+
+  "confluence_score": {
+    "total": 8,
+    "max": 17,
+    "factors": ["عامل۱: +۱", "عامل۲: +۲"],
+    "verdict_by_score": "GO|WAIT|NO"
+  },
+
+  "scenarios": {
+    "probability_bullish": "40",
+    "probability_bearish": "45",
+    "probability_sideways": "15",
+    "bull_scenario": "اگر صعودی — چه اتفاقی می‌افتد",
+    "bear_scenario": "اگر نزولی — چه اتفاقی می‌افتد",
+    "neutral_scenario": "اگر رنج — چه اتفاقی می‌افتد",
+    "most_likely": "bull|bear|neutral"
+  },
+
+  "signal": {
+    "verdict": "GO|WAIT|NO",
+    "verdict_reason": "دلیل اصلی حکم — ۱ جمله",
+    "confidence": "high|medium|low",
+    "strategy_used": "ICT|Wyckoff|S&D|Price Action|Elliott|Mixed",
+    "direction": "long|short|neutral",
+
+    "entry": "قیمت دقیق",
+    "entry_range": "از X تا Y",
+    "entry_trigger": "شرط دقیق ورود — چه چیزی باید ببینی",
+
+    "sl": "قیمت SL",
+    "sl_logic": "دلیل قرار دادن SL اینجا",
+    "sl_pips": 20,
+
+    "tp1": "قیمت TP1",
+    "tp1_pips": 30,
+    "tp1_logic": "دلیل TP1",
+
+    "tp2": "قیمت TP2 یا null",
+    "tp2_pips": 50,
+
+    "tp3": "قیمت TP3 یا null",
+    "tp3_pips": 80,
+
+    "rr1": "1.5",
+    "rr2": "2.5",
+
+    "win_prob": "62",
+    "risk_amount": "\${riskAmt}",
+    "lot_size": "محاسبه",
+    "profit_tp1": "محاسبه",
+    "profit_tp2": "محاسبه یا null",
+
+    "trade_management": "نحوه مدیریت معامله — کجا SL رو به BE برسان، کجا TP جزئی بگیر",
+    "invalidation": "چه چیزی سیگنال را باطل می‌کند",
+    "exit_before_event": "رویداد یا null",
+
+    "reason": "دلیل کامل ۵ جمله",
+    "warnings": ["هشدار۱","هشدار۲"],
+    "hidden_risks": ["ریسک پنهان۱"]
+  }
+}
+
+سرمایه: ${capital}$ | ریسک: ${riskPct}% = ${riskAmt}$
+
+فقط JSON خالص برگردان — بدون markdown:
+
+{
+  "symbol": "نماد",
+  "asset_class": "forex|gold|crypto|index",
+  "timeframes_detected": ["M5","H1"],
+  "market_structure": {
+    "w1_bias": "bullish|bearish|sideways",
+    "d1_bias": "bullish|bearish|sideways",
+    "h1_bias": "bullish|bearish|sideways",
+    "m15_bias": "bullish|bearish|sideways",
+    "htf_alignment": true,
+    "current_phase": "accumulation|distribution|markup|markdown|ranging",
+    "bos_choch": "توضیح",
+    "market_summary": "خلاصه ۳ جمله"
+  },
+  "smart_money": {
+    "order_blocks": ["OB صعودی/نزولی"],
+    "fvg": ["FVG پر نشده"],
+    "liquidity_levels": ["سطوح نقدینگی"],
+    "liquidity_swept": "توضیح",
+    "institutional_bias": "long|short|neutral"
+  },
+  "wyckoff": {
+    "phase": "A|B|C|D|E|unknown",
+    "event": "Spring|Upthrust|SOS|SOW|LPS|unknown",
+    "explanation": "توضیح"
+  },
+  "technical": {
+    "key_levels": {
+      "major_resistance": ["سطح۱","سطح۲"],
+      "major_support": ["سطح۱","سطح۲"]
+    },
+    "fibonacci": {"relevant_levels": ["سطح"],"current_retracement": "٪"},
+    "patterns": ["الگو"],
+    "candle_analysis": "تحلیل کندل",
+    "indicators": {"ema_status": "","rsi": "","macd": "","volume": "","atr": ""},
+    "vsa_analysis": "تحلیل VSA"
+  },
+  "sentiment": {
+    "retail_bias": "توضیح",
+    "smart_money_bias": "توضیح",
+    "fear_greed": "ترس|طمع|خنثی",
+    "contrarian_signal": "توضیح",
+    "news_sentiment": "توضیح"
+  },
+  "fundamental": {
+    "upcoming_events": ["رویداد"],
+    "current_impact": "توضیح",
+    "intermarket": "توضیح"
+  },
+  "confluence_score": {
+    "total": 8,
+    "max": 17,
+    "factors": ["عامل: +امتیاز"],
+    "verdict_by_score": "GO|WAIT|NO"
+  },
+  "scenarios": {
+    "probability_bullish": "40",
+    "probability_bearish": "45",
+    "probability_sideways": "15",
+    "bull_scenario": "توضیح",
+    "bear_scenario": "توضیح",
+    "neutral_scenario": "توضیح",
+    "most_likely": "bull|bear|neutral"
+  },
+  "signal": {
+    "verdict": "GO|WAIT|NO",
+    "verdict_reason": "دلیل",
+    "confidence": "high|medium|low",
+    "strategy_used": "ICT|Wyckoff|Mixed",
+    "direction": "long|short|neutral",
+    "entry": "قیمت",
+    "entry_range": "از X تا Y",
+    "entry_trigger": "شرط ورود",
+    "sl": "قیمت",
+    "sl_logic": "دلیل SL",
+    "sl_pips": 20,
+    "tp1": "قیمت",
+    "tp1_pips": 30,
+    "tp1_logic": "دلیل",
+    "tp2": "قیمت یا null",
+    "tp2_pips": 50,
+    "tp3": "قیمت یا null",
+    "tp3_pips": 80,
+    "rr1": "1.5",
+    "rr2": "2.5",
+    "win_prob": "62",
+    "risk_amount": "${riskAmt}",
+    "lot_size": "0.01",
+    "profit_tp1": "دلار",
+    "profit_tp2": "دلار یا null",
+    "trade_management": "توضیح",
+    "invalidation": "توضیح",
+    "exit_before_event": "رویداد یا null",
+    "reason": "دلیل ۵ جمله",
+    "warnings": ["هشدار"],
+    "hidden_risks": ["ریسک"]
+  }
+}`;
+}
+
+// ── File handling ──────────────────────
+function handleFiles(files) {
+  const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
+  if (!arr.length) return;
+  arr.forEach(f => {
+    if (images.length >= 5) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const base64 = e.target.result.split(',')[1];
+      const type = f.type;
+      const preview = e.target.result;
+      images.push({ base64, type, preview });
+      renderPreviews();
+    };
+    reader.readAsDataURL(f);
+  });
+}
+
+function renderPreviews() {
+  const grid = document.getElementById('previewGrid');
+  if (!images.length) { grid.style.display = 'none'; return; }
+  grid.style.display = 'grid';
+  grid.innerHTML = images.map((img, i) => `
+    <div class="preview-item">
+      <img class="preview-img" src="${img.preview}">
+      <button class="preview-del" onclick="removeImg(${i})">✕</button>
+      <div style="position:absolute;bottom:0;right:0;left:0;background:linear-gradient(transparent,rgba(0,0,0,.7));font-size:9px;color:#fff;padding:3px 5px;text-align:center;">چارت ${i+1}</div>
+    </div>
+  `).join('');
+}
+
+function removeImg(i) {
+  images.splice(i, 1);
+  renderPreviews();
+}
+
+// drag & drop
+const dz = document.getElementById('dropZone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+});
+
+// ── Risk management ────────────────────
+function getRiskUnlocked() { return highRiskOn && confirmed; }
+
+function updateRisk() {
+  const cap = parseFloat(document.getElementById('capitalInput').value) || 100;
+  let rp = parseFloat(document.getElementById('riskInput').value) || 1;
+  const unlocked = getRiskUnlocked();
+  if (!unlocked && rp > 1) { rp = 1; document.getElementById('riskInput').value = 1; }
+  document.getElementById('riskSlider').value = rp;
+  document.getElementById('riskSlider').max = unlocked ? 5 : 1;
+  document.getElementById('riskInput').max = unlocked ? 10 : 1;
+  const amt = (cap * rp / 100).toFixed(2);
+  document.getElementById('riskAmountDisplay').textContent = '$' + amt;
+  document.getElementById('riskPctDisplay').textContent = rp + '٪';
+  // color
+  const color = rp <= 0.5 ? '#00e676' : rp <= 1 ? '#00d4ff' : rp <= 2 ? '#ffd740' : '#ff3d57';
+  document.getElementById('riskAmountDisplay').style.color = color;
+  document.getElementById('riskCardTitle').style.color = color;
+  // status msg
+  const msg = document.getElementById('riskStatusMsg');
+  if (rp <= 0.5) { msg.style.background='rgba(0,230,118,.1)'; msg.style.color='#00e676'; msg.style.borderColor='rgba(0,230,118,.3)'; msg.textContent='✅ ریسک محافظه‌کارانه — ایده‌آل'; }
+  else if (rp <= 1) { msg.style.background='rgba(255,215,64,.1)'; msg.style.color='#ffd740'; msg.style.borderColor='rgba(255,215,64,.3)'; msg.textContent='⚡ ریسک استاندارد — در محدوده قانون طلایی'; }
+  else if (rp <= 2) { msg.style.background='rgba(255,165,0,.1)'; msg.style.color='#ffa500'; msg.style.borderColor='rgba(255,165,0,.3)'; msg.textContent='⚠️ ریسک بالا — فراتر از قانون طلایی'; }
+  else { msg.style.background='rgba(255,61,87,.1)'; msg.style.color='#ff3d57'; msg.style.borderColor='rgba(255,61,87,.3)'; msg.textContent='🔴 ریسک خطرناک!'; }
+  // topbar
+  const badge = document.getElementById('riskBadge');
+  badge.textContent = (getRiskUnlocked() ? '🔓' : '🔒') + ' $' + amt + ' (' + rp + '%)';
+  badge.style.color = color;
+}
+
+function syncSlider() {
+  document.getElementById('riskInput').value = document.getElementById('riskSlider').value;
+  updateRisk();
+}
+
+function toggleHighRisk() {
+  highRiskOn = !highRiskOn;
+  const warn = document.getElementById('highRiskWarning');
+  const toggle = document.getElementById('riskToggle');
+  const track = document.getElementById('toggleTrack');
+  const thumb = document.getElementById('toggleThumb');
+  const label = document.getElementById('toggleLabel');
+  const sub = document.getElementById('toggleSub');
+  const title = document.getElementById('highRiskTitle');
+  if (highRiskOn) {
+    warn.classList.remove('hidden');
+    toggle.style.background = 'rgba(255,61,87,.12)';
+    toggle.style.borderColor = '#ff3d57';
+    track.style.background = '#ff3d57';
+    thumb.style.left = '23px';
+    label.textContent = '🔓 ریسک بالا فعال است';
+    label.style.color = '#ff3d57';
+    sub.textContent = 'برای غیرفعال کردن کلیک کن';
+    title.style.color = '#ff3d57';
+  } else {
+    warn.classList.add('hidden');
+    confirmed = false;
+    toggle.style.background = '';
+    toggle.style.borderColor = '#182334';
+    track.style.background = '#2e4058';
+    thumb.style.left = '3px';
+    label.textContent = '🔒 ریسک محدود به ۱٪';
+    label.style.color = '#e8edf5';
+    sub.textContent = 'برای فعال کردن کلیک کن';
+    title.style.color = '#182334';
+    document.getElementById('checkboxBox').style.background = 'transparent';
+    document.getElementById('checkboxBox').style.borderColor = '#2e4058';
+    document.getElementById('checkmark').style.display = 'none';
+    document.getElementById('confirmLabel').style.color = '#6b8099';
+    document.getElementById('unlockMsg').classList.add('hidden');
+    document.getElementById('lockMsg').classList.remove('hidden');
+    document.getElementById('riskInput').value = 1;
+    document.getElementById('riskSlider').max = 1;
+    document.getElementById('riskInput').max = 1;
+    updateRisk();
+  }
+}
+
+function toggleConfirm() {
+  if (!highRiskOn) return;
+  confirmed = !confirmed;
+  const box = document.getElementById('checkboxBox');
+  const mark = document.getElementById('checkmark');
+  const lbl = document.getElementById('confirmLabel');
+  const unlock = document.getElementById('unlockMsg');
+  const lock = document.getElementById('lockMsg');
+  const wrap = document.getElementById('confirmCheckbox');
+  if (confirmed) {
+    box.style.background = '#ff3d57';
+    box.style.borderColor = '#ff3d57';
+    mark.style.display = 'flex';
+    lbl.style.color = '#ff3d57';
+    lbl.style.fontWeight = '700';
+    wrap.style.borderColor = '#ff3d57';
+    wrap.style.background = 'rgba(255,61,87,.1)';
+    unlock.classList.remove('hidden');
+    lock.classList.add('hidden');
+    document.getElementById('riskSlider').max = 5;
+    document.getElementById('riskInput').max = 10;
+  } else {
+    box.style.background = 'transparent';
+    box.style.borderColor = '#2e4058';
+    mark.style.display = 'none';
+    lbl.style.color = '#6b8099';
+    lbl.style.fontWeight = '400';
+    wrap.style.borderColor = '#182334';
+    wrap.style.background = 'transparent';
+    unlock.classList.add('hidden');
+    lock.classList.remove('hidden');
+    document.getElementById('riskInput').value = 1;
+    document.getElementById('riskSlider').max = 1;
+    document.getElementById('riskInput').max = 1;
+    updateRisk();
+  }
+  updateRisk();
+}
+
+// ── Tabs ───────────────────────────────
+function showTab(name) {
+  ['upload','settings','result'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('hidden', t !== name);
+  });
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', ['upload','settings','result'][i] === name);
+  });
+}
+
+// ── Confluence list ────────────────────
+function toggleConfluence() {
+  const body = document.getElementById('confluenceBody');
+  const arrow = document.getElementById('confluenceArrow');
+  body.classList.toggle('hidden');
+  arrow.textContent = body.classList.contains('hidden') ? '▼' : '▲';
+}
+const confluenceItems = [
+  ['روند D1/W1 هماهنگ','+2'],['Order Block / S&D Zone','+2'],
+  ['BOS یا ChoCH تأیید','+2'],['Liquidity Sweep','+2'],
+  ['الگوی Wyckoff','+2'],['FVG پر نشده','+1'],
+  ['Fibonacci 61.8/78.6','+1'],['حمایت/مقاومت کلیدی','+1'],
+  ['کندل تأیید','+1'],['حجم تأیید','+1'],
+  ['RSI Divergence','+1'],['MACD Crossover','+1'],['EMA Alignment','+1'],
+];
+document.getElementById('confluenceList').innerHTML = confluenceItems.map(([k,v]) =>
+  `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #182334;font-size:11px;"><span style="color:#6b8099;">${k}</span><span style="color:#b46ef5;font-weight:800;">${v}</span></div>`
+).join('');
+
+// ── Analyze ────────────────────────────
+async function analyze() {
+  if (!images.length) {
+    showError('حداقل یک چارت آپلود کن'); return;
+  }
+  showTab('result');
+  document.getElementById('loadingState').classList.remove('hidden');
+  document.getElementById('emptyState').classList.add('hidden');
+  document.getElementById('resultContent').classList.add('hidden');
+
+  const cap = parseFloat(document.getElementById('capitalInput').value) || 100;
+  const rp  = parseFloat(document.getElementById('riskInput').value) || 1;
+  const ctx = document.getElementById('contextInput').value;
+
+  try {
+    const content = [
+      ...images.map(img => ({ type:'image', source:{ type:'base64', media_type:img.type, data:img.base64 } })),
+      { type:'text', text:`تحلیل کامل. سرمایه:${cap}$ ریسک:${rp}%=${(cap*rp/100).toFixed(2)}$${ctx?' | '+ctx:''}` }
+    ];
+    const apiKey = localStorage.getItem('anthropic_key') || document.getElementById('apiKeyInput')?.value || '';
+    if (!apiKey || !apiKey.startsWith('sk-')) {
+      showTab('upload');
+      showError('❌ ابتدا API key رو در بالای صفحه وارد کن');
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('emptyState').classList.remove('hidden');
+      return;
+    }
+
+    const payload = JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1000,
+      system: buildPrompt(cap, rp),
+      messages:[{ role:'user', content }]
+    });
+
+    // Try with proxy (works from local file and mobile)
+    let res;
+    try {
+      res = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://api.anthropic.com/v1/messages'), {
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: payload
+      });
+    } catch(e1) {
+      try {
+        res = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://api.anthropic.com/v1/messages'), {
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+            'x-api-key': apiKey,
+            'anthropic-version': '2023-06-01'
+          },
+          body: payload
+        });
+      } catch(e2) {
+        throw new Error('اتصال ممکن نیست. VPN رو چک کن یا فایل رو روی GitHub Pages آپلود کن.');
+      }
+    }
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    const raw = data.content.map(b => b.text||'').join('').trim();
+    const result = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    renderResult(result, cap, rp);
+  } catch(e) {
+    document.getElementById('loadingState').classList.add('hidden');
+    document.getElementById('emptyState').classList.remove('hidden');
+    showError('خطا: ' + e.message);
+    showTab('upload');
+  }
+}
+
+function showError(msg) {
+  const el = document.getElementById('uploadError');
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 5000);
+}
+
+// ── Render Result ──────────────────────
+function renderResult(r, cap, rp) {
+  document.getElementById('loadingState').classList.add('hidden');
+  const sig = r.signal || {};
+  const ms  = r.market_structure || {};
+  const sm  = r.smart_money || {};
+  const cs  = r.confluence_score || {};
+  const sc  = r.scenarios || {};
+  const sent= r.sentiment || {};
+  const tech= r.technical || {};
+  const fund= r.fundamental || {};
+
+  const verdictMap = {
+    GO:   { color:'#00e676', icon:'✅', text:'سیگنال معتبر — می‌توان وارد شد' },
+    WAIT: { color:'#ffd740', icon:'⏳', text:'صبر کن — شرایط مناسب نیست' },
+    NO:   { color:'#ff3d57', icon:'⛔', text:'رد شد — وارد نشو' },
+  };
+  const vd = verdictMap[sig.verdict] || verdictMap.WAIT;
+  const confColor = sig.confidence==='high'?'#00e676':sig.confidence==='medium'?'#ffd740':'#ff3d57';
+  const confText  = sig.confidence==='high'?'بالا':sig.confidence==='medium'?'متوسط':'پایین';
+  const dirColor  = sig.direction==='long'?'#00e676':'#ff3d57';
+
+  function card(title, color, content, collapsible=false, id='') {
+    const cid = id || 'c'+Math.random().toString(36).slice(2);
+    return `<div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:1px solid #182334;${collapsible?'cursor:pointer;':''}" ${collapsible?`onclick="toggleCard('${cid}')"`:''}>
+        <div class="card-title" style="color:${color};border:none;padding:0;margin:0;">${title}</div>
+        ${collapsible?`<button class="collapse-btn" id="arr-${cid}">▼</button>`:''}
+      </div>
+      <div class="card-body" id="${cid}">${content}</div>
+    </div>`;
+  }
+
+  function row(label, value, color='#e8edf5', mono=false, sub='') {
+    return `<div class="row-item">
+      <div><div class="row-label">${label}</div>${sub?`<div style="font-size:10px;color:#2e4058;margin-top:2px;">${sub}</div>`:''}</div>
+      <span class="row-value" style="color:${color};${mono?'font-family:monospace;':''}">${value}</span>
+    </div>`;
+  }
+
+  function bar(label, value, max, unit, minGood) {
+    const val = parseFloat(value)||0;
+    const pct = Math.min(100, Math.max(0, (val/max)*100));
+    const color = minGood ? (val>=minGood?'#00e676':'#ff3d57') : '#00d4ff';
+    return `<div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:11px;color:#6b8099;">${label}</span>
+        <span style="font-size:14px;font-weight:800;color:${color};font-family:monospace;">${val}${unit}</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color};"></div></div>
+      ${minGood?`<div style="font-size:10px;color:#2e4058;margin-top:3px;">حداقل: ${minGood}${unit}</div>`:''}
+    </div>`;
+  }
+
+  let html = '';
+
+  // Header
+  html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <div>
+      <span style="font-size:22px;font-weight:900;color:#00d4ff;">${r.symbol||''}</span>
+      <span style="font-size:10px;color:#6b8099;margin-right:6px;">${r.asset_class||''}</span>
+    </div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;">
+      ${(r.timeframes_detected||[]).map(tf=>`<span class="badge" style="background:rgba(0,212,255,.15);color:#00d4ff;border:1px solid rgba(0,212,255,.25);">${tf}</span>`).join('')}
+    </div>
+  </div>`;
+
+  // Verdict
+  html += `<div class="verdict" style="background:${vd.color}12;border:2px solid ${vd.color};">
+    <div style="font-size:30px;margin-bottom:6px;">${vd.icon}</div>
+    <div style="font-size:17px;font-weight:900;color:${vd.color};">${vd.text}</div>
+    ${sig.verdict_reason?`<div style="font-size:12px;color:${vd.color}bb;margin-top:6px;line-height:1.6;">${sig.verdict_reason}</div>`:''}
+    ${sig.confidence?`<div class="level-tag" style="margin-top:10px;background:${confColor}20;color:${confColor};border:1px solid ${confColor}44;">اطمینان: ${confText}</div>`:''}
+  </div>`;
+
+  // Confluence
+  if (cs.total !== undefined) {
+    const spct = Math.min(100,(cs.total/cs.max)*100);
+    const sc2 = cs.total>=10?'#00e676':cs.total>=6?'#ffd740':'#ff3d57';
+    const sv = cs.total>=10?'قوی':cs.total>=6?'متوسط':'ضعیف';
+    html += card('🎯 امتیاز Confluence','#b46ef5',`
+      <div style="background:#141f2e;border-radius:10px;padding:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <span style="font-size:12px;color:#6b8099;">امتیاز</span>
+          <span style="font-size:22px;font-weight:900;font-family:monospace;color:${sc2};">${cs.total}<span style="font-size:12px;color:#6b8099;">/${cs.max}</span></span>
+        </div>
+        <div class="bar-track" style="height:10px;margin-bottom:6px;"><div class="bar-fill" style="width:${spct}%;background:${sc2};height:10px;"></div></div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-size:10px;color:#2e4058;">حداقل GO: 6</span>
+          <span style="font-size:11px;color:${sc2};font-weight:700;">${sv}</span>
+        </div>
+      </div>
+      ${cs.factors?.length?`<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:5px;">${cs.factors.map(f=>`<span class="badge" style="background:rgba(180,110,245,.15);color:#b46ef5;border:1px solid rgba(180,110,245,.25);">${f}</span>`).join('')}</div>`:''}
+    `, true);
+  }
+
+  // Market structure
+  const trendMap = { bullish:{c:'#00e676',i:'↗'}, bearish:{c:'#ff3d57',i:'↘'}, sideways:{c:'#ffd740',i:'↔'} };
+  const td = b => trendMap[b]||{c:'#6b8099',i:'?'};
+  if (ms.market_summary) {
+    html += card('📐 ساختار بازار','#00d4ff',`
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        ${[['W1/D1',ms.d1_bias],['H1',ms.h1_bias],['M15',ms.m15_bias]].map(([l,b])=>`
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;background:${td(b).c}10;border:1px solid ${td(b).c}30;border-radius:8px;padding:8px 4px;">
+            <div style="font-size:9px;color:#6b8099;margin-bottom:3px;">${l}</div>
+            <div style="font-size:16px;color:${td(b).c};">${td(b).i}</div>
+            <div style="font-size:9px;color:${td(b).c};font-weight:700;">${b||'?'}</div>
+          </div>`).join('')}
+      </div>
+      <div style="font-size:11px;padding:7px 10px;border-radius:7px;margin-bottom:10px;background:${ms.htf_alignment?'rgba(0,230,118,.1)':'rgba(255,215,64,.1)'};color:${ms.htf_alignment?'#00e676':'#ffd740'};border:1px solid ${ms.htf_alignment?'rgba(0,230,118,.3)':'rgba(255,215,64,.3)'};">
+        ${ms.htf_alignment?'✅ همه TFها هماهنگ — تأیید قوی':'⚠️ TFها ناهماهنگ — احتیاط'}
+      </div>
+      ${ms.current_phase?row('فاز بازار',ms.current_phase,'#f5a623'):''}
+      ${ms.bos_choch?row('BOS / ChoCH',ms.bos_choch):''}
+      <div style="font-size:12px;color:#e8edf5;line-height:1.8;padding:8px 10px;background:#141f2e;border-radius:7px;margin-top:8px;">${ms.market_summary}</div>
+    `, true);
+  }
+
+  // Smart Money
+  if (sm.institutional_bias) {
+    const ibColor = sm.institutional_bias==='long'?'#00e676':sm.institutional_bias==='short'?'#ff3d57':'#6b8099';
+    html += card('💡 Smart Money / ICT','#00e676',`
+      ${row('جهت پول هوشمند', sm.institutional_bias==='long'?'🟢 Long':sm.institutional_bias==='short'?'🔴 Short':'⚪ Neutral', ibColor)}
+      ${sm.order_blocks?.length?`<div style="margin:8px 0;"><div style="font-size:10px;color:#6b8099;margin-bottom:4px;">Order Blocks:</div>${sm.order_blocks.map(o=>`<div style="font-size:11px;color:#00e676;padding:3px 0;">· ${o}</div>`).join('')}</div>`:''}
+      ${sm.fvg?.length?`<div style="margin:8px 0;"><div style="font-size:10px;color:#6b8099;margin-bottom:4px;">Fair Value Gaps:</div>${sm.fvg.map(f=>`<div style="font-size:11px;color:#ffd740;padding:3px 0;">· ${f}</div>`).join('')}</div>`:''}
+      ${sm.liquidity_levels?.length?`<div style="margin:8px 0;"><div style="font-size:10px;color:#6b8099;margin-bottom:4px;">سطوح نقدینگی:</div>${sm.liquidity_levels.map(l=>`<div style="font-size:11px;color:#ff3d57;padding:3px 0;">· ${l}</div>`).join('')}</div>`:''}
+      ${sm.liquidity_swept?row('شکار نقدینگی',sm.liquidity_swept):''}
+    `, true);
+  }
+
+  // Wyckoff
+  if (r.wyckoff?.phase && r.wyckoff.phase!=='unknown') {
+    html += card('📊 Wyckoff Method','#f5a623',`
+      ${row('فاز','Phase '+r.wyckoff.phase,'#f5a623')}
+      ${row('رویداد',r.wyckoff.event,'#00d4ff')}
+      <div style="font-size:12px;color:#e8edf5;line-height:1.8;padding:8px 10px;background:#141f2e;border-radius:7px;margin-top:8px;">${r.wyckoff.explanation}</div>
+    `, true);
+  }
+
+  // Signal
+  if (sig.verdict==='GO') {
+    html += card(`🎯 سیگنال — ${sig.strategy_used||''}`, sig.direction==='long'?'#00e676':'#ff3d57', `
+      ${row('جهت', sig.direction==='long'?'🟢 Long (خرید)':'🔴 Short (فروش)', dirColor)}
+      ${row('ناحیه ورود', sig.entry_range||sig.entry, '#e8edf5', true)}
+      ${row('ورود دقیق', sig.entry, '#00d4ff', true)}
+      ${sig.entry_trigger?row('شرط ورود',sig.entry_trigger,'#e8edf5',false,'قبل از ورود این را ببین'):''}
+      ${row('🛑 Stop Loss', sig.sl, '#ff3d57', true, sig.sl_logic||'')}
+      ${row('🎯 TP1', sig.tp1, '#00e676', true, sig.tp1_logic||'')}
+      ${sig.tp2?row('🎯 TP2', sig.tp2, '#00e676', true):''}
+      ${sig.tp3?row('🎯 TP3', sig.tp3, 'rgba(0,230,118,.6)', true):''}
+      ${sig.exit_before_event?row('⏰ خروج قبل از', sig.exit_before_event, '#ffd740'):''}
+      <div style="margin-top:14px;">
+        ${bar('R:R تا TP1', sig.rr1, 4, ':1', 1.5)}
+        ${sig.rr2?bar('R:R تا TP2', sig.rr2, 6, ':1'):''}
+        ${bar('احتمال موفقیت', sig.win_prob, 100, '٪', 55)}
+      </div>
+      ${sig.trade_management?`<div style="margin-top:10px;font-size:11px;color:#00d4ff;padding:8px 10px;background:rgba(0,212,255,.07);border-radius:7px;line-height:1.8;border-right:3px solid #00d4ff;"><div style="font-size:10px;color:#6b8099;margin-bottom:3px;">مدیریت معامله:</div>${sig.trade_management}</div>`:''}
+      ${sig.invalidation?`<div style="margin-top:8px;font-size:11px;color:#ff3d57;padding:7px 10px;background:rgba(255,61,87,.07);border-radius:7px;border-right:3px solid #ff3d57;"><span style="font-size:10px;color:#6b8099;">باطل‌کننده: </span>${sig.invalidation}</div>`:''}
+    `);
+
+    // Capital mgmt
+    html += card('💰 مدیریت سرمایه','#f5a623',`
+      ${row('ریسک ($)', '$'+(sig.risk_amount||((cap*rp/100).toFixed(2))), '#f5a623')}
+      ${row('حجم (Lot)', sig.lot_size||'—', '#00d4ff', true)}
+      ${row('سود TP1 ($)', '$'+(sig.profit_tp1||'—'), '#00e676')}
+      ${sig.profit_tp2?row('سود TP2 ($)', '$'+sig.profit_tp2, '#00e676'):''}
+      ${row('SL فاصله', (sig.sl_pips||'—')+' پیپ', '#e8edf5', true)}
+      ${row('TP1 فاصله', (sig.tp1_pips||'—')+' پیپ', '#e8edf5', true)}
+    `);
+  }
+
+  // Probabilities
+  if (sc.probability_bullish) {
+    const b=parseFloat(sc.probability_bullish)||0, br=parseFloat(sc.probability_bearish)||0, s=parseFloat(sc.probability_sideways)||0;
+    html += card('📊 احتمال سناریوها','#00d4ff',`
+      <div class="prob-bar">
+        <div style="width:${b}%;background:#00e676;transition:width .6s;"></div>
+        <div style="width:${br}%;background:#ff3d57;transition:width .6s;"></div>
+        <div style="width:${s}%;background:#ffd740;transition:width .6s;"></div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:4px;"><div style="width:8px;height:8px;border-radius:50%;background:#00e676;"></div><span style="font-size:10px;color:#6b8099;">صعودی </span><span style="font-size:11px;font-weight:700;color:#00e676;">${b}٪</span></div>
+        <div style="display:flex;align-items:center;gap:4px;"><div style="width:8px;height:8px;border-radius:50%;background:#ff3d57;"></div><span style="font-size:10px;color:#6b8099;">نزولی </span><span style="font-size:11px;font-weight:700;color:#ff3d57;">${br}٪</span></div>
+        <div style="display:flex;align-items:center;gap:4px;"><div style="width:8px;height:8px;border-radius:50%;background:#ffd740;"></div><span style="font-size:10px;color:#6b8099;">رنج </span><span style="font-size:11px;font-weight:700;color:#ffd740;">${s}٪</span></div>
+      </div>
+      ${sc.bull_scenario?`<div class="scenario-block" style="background:rgba(0,230,118,.05);border-right-color:#00e676;"><div style="font-size:10px;color:#00e676;font-weight:800;margin-bottom:4px;">↗ صعودی</div>${sc.bull_scenario}</div>`:''}
+      ${sc.bear_scenario?`<div class="scenario-block" style="background:rgba(255,61,87,.05);border-right-color:#ff3d57;"><div style="font-size:10px;color:#ff3d57;font-weight:800;margin-bottom:4px;">↘ نزولی</div>${sc.bear_scenario}</div>`:''}
+      ${sc.neutral_scenario?`<div class="scenario-block" style="background:rgba(255,215,64,.05);border-right-color:#ffd740;"><div style="font-size:10px;color:#ffd740;font-weight:800;margin-bottom:4px;">↔ رنج</div>${sc.neutral_scenario}</div>`:''}
+    `, true);
+  }
+
+  // Sentiment
+  if (sent.retail_bias) {
+    html += card('🧠 سنتیمنت بازار','#b46ef5',`
+      ${row('سنتیمنت ریتیل', sent.retail_bias)}
+      ${row('پول هوشمند', sent.smart_money_bias, '#00e676')}
+      ${sent.fear_greed?row('Fear & Greed', sent.fear_greed, sent.fear_greed==='ترس'?'#ff3d57':sent.fear_greed==='طمع'?'#00e676':'#ffd740'):''}
+      ${sent.contrarian_signal?row('سیگنال Contrarian', sent.contrarian_signal, '#b46ef5'):''}
+    `, true);
+  }
+
+  // Technical
+  if (tech.candle_analysis) {
+    html += card('📉 تحلیل تکنیکال','#e8edf5',`
+      ${tech.key_levels?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div><div style="font-size:10px;color:#ff3d57;font-weight:800;margin-bottom:6px;">🔴 مقاومت‌ها</div>${(tech.key_levels.major_resistance||[]).map(l=>`<div style="font-size:12px;color:#ff3d57;font-family:monospace;margin-bottom:4px;padding:3px 7px;background:rgba(255,61,87,.08);border-radius:4px;">${l}</div>`).join('')}</div>
+        <div><div style="font-size:10px;color:#00e676;font-weight:800;margin-bottom:6px;">🟢 حمایت‌ها</div>${(tech.key_levels.major_support||[]).map(l=>`<div style="font-size:12px;color:#00e676;font-family:monospace;margin-bottom:4px;padding:3px 7px;background:rgba(0,230,118,.08);border-radius:4px;">${l}</div>`).join('')}</div>
+      </div>`:''}
+      ${tech.indicators?Object.entries(tech.indicators).map(([k,v])=>row(k.toUpperCase(),v)).join(''):''}
+      ${tech.candle_analysis?`<div style="font-size:11px;color:#e8edf5;line-height:1.8;padding:7px 10px;background:#141f2e;border-radius:7px;margin-top:8px;">${tech.candle_analysis}</div>`:''}
+      ${tech.vsa_analysis?`<div style="margin-top:8px;font-size:11px;color:#e8edf5;line-height:1.8;padding:7px 10px;background:#141f2e;border-radius:7px;"><div style="font-size:10px;color:#6b8099;margin-bottom:3px;">VSA:</div>${tech.vsa_analysis}</div>`:''}
+    `, true);
+  }
+
+  // Fundamental
+  if (fund.current_impact) {
+    html += card('📰 فاندامنتال','#ffd740',`
+      ${fund.upcoming_events?.length?`<div style="margin-bottom:10px;"><div style="font-size:10px;color:#ff3d57;font-weight:800;margin-bottom:6px;">رویدادهای پیش رو:</div>${fund.upcoming_events.map(e=>`<div style="font-size:11px;color:#ffd740;padding:4px 0;border-bottom:1px solid #182334;">⚡ ${e}</div>`).join('')}</div>`:''}
+      ${fund.current_impact?`<div style="font-size:11px;color:#e8edf5;line-height:1.8;margin-bottom:8px;">${fund.current_impact}</div>`:''}
+      ${fund.intermarket?row('Intermarket',fund.intermarket):''}
+    `, true);
+  }
+
+  // Reason
+  if (sig.reason) {
+    html += card('💬 استدلال نهایی','#e8edf5',`<div style="font-size:12px;color:#e8edf5;line-height:1.9;">${sig.reason}</div>`);
+  }
+
+  // Warnings
+  const warns = [...(sig.warnings||[]),...(sig.hidden_risks||[])];
+  if (warns.length) {
+    html += card('⚠️ هشدارها','#ffd740',warns.map((w,i,a)=>`<div style="font-size:11px;color:#ffd740;padding:6px 0;${i<a.length-1?'border-bottom:1px solid #182334;':''}">• ${w}</div>`).join(''));
+  }
+
+  html += `<div style="text-align:center;font-size:10px;color:#2e4058;margin-top:10px;line-height:1.8;">ابزار کمکی — نه توصیه مالی<br>تصمیم نهایی با خودت است</div>`;
+
+  const rc = document.getElementById('resultContent');
+  rc.innerHTML = html;
+  rc.classList.remove('hidden');
+}
+
+function toggleCard(id) {
+  const el = document.getElementById(id);
+  const arr = document.getElementById('arr-'+id);
+  if (!el) return;
+  el.classList.toggle('hidden');
+  if (arr) arr.textContent = el.classList.contains('hidden') ? '▼' : '▲';
+}
+
+
+function saveApiKey() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  const status = document.getElementById('apiKeyStatus');
+  if (key.startsWith('sk-ant')) {
+    localStorage.setItem('anthropic_key', key);
+    status.textContent = '✅ کلید ذخیره شد';
+    status.style.color = '#00e676';
+  } else if (key.length > 0) {
+    status.textContent = '❌ فرمت کلید اشتباه است (باید با sk-ant شروع شود)';
+    status.style.color = '#ff3d57';
+  } else {
+    status.textContent = 'کلید وارد نشده';
+    status.style.color = '#2e4058';
+    localStorage.removeItem('anthropic_key');
+  }
+}
+
+// Load saved key on startup
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('anthropic_key');
+  if (saved) {
+    const inp = document.getElementById('apiKeyInput');
+    if (inp) {
+      inp.value = saved;
+      const status = document.getElementById('apiKeyStatus');
+      status.textContent = '✅ کلید ذخیره‌شده بارگذاری شد';
+      status.style.color = '#00e676';
+    }
+  }
+});
+
+updateRisk();
+</script>
+</body>
+</html>
